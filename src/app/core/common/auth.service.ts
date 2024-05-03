@@ -21,7 +21,7 @@ const httpOptions = { headers: new HttpHeaders({ 'Content-Type':  'application/j
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  profilePromise: Promise<IProfile>; // Loading profile promise. This is resolved once after loading
+  profilePromise: Promise<IProfile>; // Loading profile promise. This is resolved once after a valid profile is loaded
 
   profile ?: IProfile;
   profile$ = new BehaviorSubject<IProfile | undefined>(undefined);
@@ -74,7 +74,7 @@ export class AuthService {
           this.clearProfile().then(() => {
             const route = this.route.snapshot.firstChild?.routeConfig;
             if ((!route || route && route.data && !route.data['noLogin'])) { this.redirectLogin(); }
-            reject();
+            // reject();
           });
         }        
       });
@@ -136,9 +136,7 @@ export class AuthService {
   }
 
   updateProfile(data: any) {
-    updateProfile(this.firebaseUser, data).then(() => {
-      console.log('NAME updated');  
-    });
+    return updateProfile(this.firebaseUser, data);
   }
 
 

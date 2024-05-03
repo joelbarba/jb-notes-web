@@ -1,0 +1,37 @@
+.pointer { cursor: pointer; }
+.link { cursor: pointer; &:hover { text-decoration: underline; }}
+
+.hide { display: none; }
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+.flex-3 { flex: 3; }
+.flex-4 { flex: 4; }
+.flex-5 { flex: 5; }
+.flex-6 { flex: 6; }
+.flex-7 { flex: 7; }
+.flex-8 { flex: 8; }
+.flex-9 { flex: 9; }
+
+body {
+  font-family: verdana;
+}
+
+body.dark-mode {
+  background: black;
+  color: #797979;
+  textarea {
+    background: darken($primary_color, 10%);
+    color: white;
+    border: 1px solid darken(white, 50%);
+  }
+  .panel-right .note-content .check-list-content {
+    background: darken($primary_color, 5%);
+    .check-item { border-color: $primary_color; }
+  }
+}

@@ -1,61 +1,42 @@
-<h1 translate>view.title</h1>
-<p translate>view.untranslated.label</p>
+<div class="row mt-3" *ngIf="data.selNotebookId$ | async as selId">
+  
+  <!-- Notes -->
+  <div class="col notes-list">
+    <h3>
+      Notes<span *ngIf="selId !== 'all'"> from <span class="icon-book"></span> {{selId}}</span>:
+    </h3>
+    
+    <div class="row note-row" *ngFor="let note of list$ | async" (click)="selectNote(note)">
+      <div class="col-9">
+        <h5>
+          <span class="icon-file-text2"></span>
+          <span class="ml-2">{{ note.title }}</span>
+        </h5>
+      </div>
+      <div class="col-3 text-right">
+        {{ note.updated | date: 'dd MMM y - HH:mm:ss' }}
+      </div>
+      <div class="col-12" *ngIf="selId === 'all'">
+        <span style="margin-right: 5px;" class="icon-book"></span>
+        <span>{{note.notebookId}}[{{note.order}}]</span>
+      </div>
+      <div class="col-12 content">{{note.content.slice(0, 150)}}</div>
+    </div>
 
-<div>{{ 'view.title.hello' | translate: { param1: 'AAA' } }}</div>
+  </div>
 
-
-<span class="icon-cross"></span>
-
-<bf-btn class="secondary"
-(bfClick)="myFunc($event)"
-bfText="Click Me"
-bfIcon="icon-plus">
-</bf-btn>
-
-<bf-label class="block value-mar-15 value-inline"
-        bfText="view.common.username"
-        bfValue="view.title.hello"
-        [bfRequired]="true"
-        bfTooltip="view.tooltip.message"
-        [bfTooltipBody]="true">
-</bf-label>
-
-<bf-input [(ngModel)]="myVariable"
-        bfLabel="view.common.name"
-        bfIcon="icon-search"
-        [bfRequired]="true"
-        [bfAutocomplete]="true"
-        bfErrorText="Hello world">
-</bf-input>
-
-<h2>Languages:</h2>
-<div class="row">
-  <div class="col-12">Selected language: {{ language$ | async }}</div>
-  <div class="col-12">Selected localeId: {{ localeId$ | async }}</div>    
+  <!-- Notebooks -->
+  <div class="col-lg-3 col-4">
+    <bf-btn class="full-width" bfType="add" bfText="Create New Note" (bfClick)="createNewNote()"></bf-btn>
+    <h3 class="mt-3">Notebooks:</h3>
+    <div class="notebook-row" [class.selected]="selId === 'all'" (click)="selectNotebook()">
+      <span>All Notes</span>
+    </div>
+    <div *ngFor="let notebook of data.notebooks$ | async"
+          class="notebook-row" [class.selected]="selId === notebook.id"
+        (click)="selectNotebook(notebook)">
+      <span class="icon-book"></span>
+      <span class="ml-2">{{ notebook.name }}</span>
+    </div>
+  </div>
 </div>
-<!-- <pre>{{ languages | json }}</pre> -->
-
-<div class="mt-4 row" *ngIf="languages">
-  <bf-dropdown 
-    class="col-6"
-    bfLabel="view.common.language"
-    [(ngModel)]="lang"
-    (ngModelChange)="selectLang($event)"
-    [bfList]="languages"
-    bfSelect="code"
-    bfRender="name"
-    bfPlaceholder="views.dropdown.placeholder">
-  </bf-dropdown>
-</div>
-
-
-<ul class="mt-4" *ngIf="!!notes$">
-  <li class="row mb-2" *ngFor="let note of notes$ | async">
-    <bf-btn class="col-3 secondary full-width"
-      bfIcon="icon-plus"
-      bfText="Select">
-    </bf-btn>
-    <div class="col-3">{{ note.notebookId }}</div>
-    <div class="col">{{ note.title }}</div>
-  </li>
-</ul>

@@ -1,6 +1,6 @@
 <nav class="navbar" [class.logged-out]="!isLoggedIn">
   <div class="navbar-brand" [class.logged-in]="isLoggedIn">
-    <h1 class="app-title">The App</h1>
+    <h1 class="app-title">JB-NOTES</h1>
     <!-- <a class="d-block" routerLink="/home" tabIndex="0">
       <img src="assets/images/brand/logo.png?v=8.1" alt="{{ 'navbar.logo.alt_text' | translate : { brand: 'brand.name' | translate } }}">
     </a> -->
@@ -20,21 +20,30 @@
 
 <div class="profile-box" [class.expanded]="isProfileExpanded" *ngIf="!!auth?.profile">
   <div class="row">
-    <h2 class="col-12 mt-2 mb-4">{{auth.profileUserName}}</h2>
-    <div class="col-12">
-      <bf-input bfLabel="Name" [(ngModel)]="displayName"></bf-input>
-      <bf-btn bfText="Save Profile" (bfClick)="updateProfile()"></bf-btn>
+    <h4 class="col-12 mt-2 mb-4">Username: {{auth.profileUserName}}</h4>
+
+    <bf-label class="col-12 value-inline value-mar-15" bfText="view.common.email" [bfValue]="auth.profile?.email || ''"></bf-label>
+    <!-- bfRightBtnText="Save"
+    bfRightBtnIcon="icon-checkmark"
+    (bfRightBtnClick)="updateProfile()" -->
+    <bf-input class="col-8" style="margin-top: 20px" bfLabel="Name" [(ngModel)]="displayName"></bf-input>
+    <div class="col-4 text-right" style="margin-top: 41px">
+      <bf-btn class="full-width" bfText="Save" (bfClick)="updateProfile()"></bf-btn>
+    </div>
+    <div class="col-12 mt-3">
+      <bf-switch class="d-block horizontal" bfLabel="Dark Mode" [(ngModel)]="darkMode" (ngModelChange)="changeDarkMode($event)">
+      </bf-switch>
     </div>
 
     <!-- <p class="col-4"><b translate>view.common.username</b>:</p>   <p class="col-8">{{auth.profile?.username}}</p> -->
-    <p class="col-4"><b translate>view.common.email</b>:</p>      <p class="col-8">{{auth.profile?.email}}</p>
+    <!-- <p class="col-4"><b translate>view.common.email</b>:</p>      <p class="col-8">{{auth.profile?.email}}</p> -->
     <!-- <p class="col-4"><b>time_zone:</b></p>                        <p class="col-8">{{auth.profile?.time_zone}}</p> -->
     <!-- <div class="col-12">Selected language: {{ language$ | async }}</div> -->
     <!-- <div class="col-12">Selected localeId: {{ localeId$ | async }}</div>     -->
 
   </div>
 
-  <div class="row profile-bottom">
+  <div class="row mt-4 profile-bottom">
     <bf-dropdown *ngIf="languages"
       class="col-7 full-width"
       bfLabel="view.common.language"

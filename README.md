@@ -25,3 +25,27 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+TODOS:
+ok - Highlight selected note
+ok - Expand/collapse notebooks notes
+ok - Move note to another notebook
+ok - Edit title
+ok - Edit order
+ok - Edit textbox size and font
+ok - List mode
+ok - New Note
+ok - Delete Note
+ok - Dark Mode
+ok - Key shortcuts (Ctrl+D = copy line)
+- Implement undo (ctrl+z)
+- Handle offline (do not clear when going offline)
+- Create/Delete notebook
+- Text Filter on the notes list
+- Notes order on All Notes left panel
+- Font-family and size on the note DB
+- Move dark mode on localstorage
+- Deploy it on netlify
+
+

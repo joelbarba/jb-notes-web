@@ -1,12 +1,20 @@
 
 // Local colors
-$primary_color    : #1abc9c;
-$secondary_color  : #046F5A;
-$tertiary_color   : #BC451A;
-$quaternary_color : #2E4856;
-$warning_color    : #BC451A;
-$extra_color      : #6F1E00;
+$primary_color    : #313131;
+$secondary_color  : #607D8B;
+$tertiary_color   : mediumseagreen;
+$quaternary_color : cadetblue; // olivedrab;
+$warning_color    : crimson;
+$extra_color      : orangered;
 
 
 @import "./default-vars.scss";
 
+
+$growl-border: rgba($white, 0.4);
+$growl-success: $white;
+$growl-success-bg: darken($tertiary_color, 15%);
+$growl-error: $white;
+$growl-error-bg: $warning_color;
+$zindex-modal-backdrop: 1060;
+$zindex-modal: 1065;

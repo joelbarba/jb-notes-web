@@ -4,8 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { BfUiLibModule } from '@blueface_npm/bf-ui-lib';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { BfLang, BfLangList, AppTranslateService } from '../../core/common/app-translate.service';
-import { BehaviorSubject, Observable, Subject, map, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, map, take } from 'rxjs';
 import { Firestore, getDocs, query, collection, collectionData, onSnapshot, where } from '@angular/fire/firestore';
+import { DataService } from '../../core/data.service';
+import { INotebook } from '../../core/common/interfaces';
+import { Router } from '@angular/router';
 
 export interface INote {
   id?: string;
@@ -32,57 +35,38 @@ export interface INote {
   ],
 })
 export class HomeComponent {
-  languages!: BfLangList;
-  localeId$ = this.appTranslate.localeId$;
-  language$ = this.appTranslate.language$;
-  lang = '';
+  list$ !: Observable<INote[]>;
   
-  title = 'My app';
-  myVariable = 'HEY';
-
-  notesCol = collection(this.firestore, 'notes');
-  notes$ = collectionData(this.notesCol) as Observable<INote[]>;
-
+  
   constructor(
     private translate: TranslateService,
     private appTranslate: AppTranslateService,
-    // private af: AngularFire,
-    public firestore: Firestore,
+    public data: DataService,
+    public router: Router,
   ) {    
   }
 
 
   ngOnInit() {
-    this.appTranslate.languagesPromise.then(langs => this.languages = langs);
-    this.appTranslate.transReady.then(() => this.lang = this.appTranslate.currentLanguage);    
+    this.data.initPromise.then(() => {
+      this.list$ = combineLatest([this.data.notes$, this.data.selNotebookId$])
+        .pipe(map(([notes, notebookId]) => {
+          return notes.filter(note => (note.notebookId === notebookId) || notebookId === 'all') as INote[];
+      }));
+    });
   }
 
-  isSelected(lang: BfLang) {
-    // console.log(lang, this.appTranslate.currentLocale);
-    return this.appTranslate.currentLocale === lang.localeId;
+  selectNote(note: INote) {
+    this.router.navigate(['notes/', note.id]);
   }
 
-  selectLang(code: string) {
-    if (code) { this.appTranslate.changeLanguage(code); }
+  selectNotebook(notebook?: INotebook) {
+    this.data.selectNotebook(notebook?.id || 'all');
   }
 
-  myFunc(e: any) {
-    console.log(e);
+  createNewNote() {
+    this.data.createNewNote().then(docRef => this.router.navigate(['notes/', docRef.id]));
   }
 
-  loadNotes() {
-    // this.notes$ = this.notesCol.snapshotChanges().pipe(
-    //   map(notes => notes
-    //     .map(n => {
-    //       const data = n.payload.doc.data() as INote;
-    //       return { id: n.payload.doc.id, ...data };
-    //     })
-    //     .filter(n => n.id !== '0')
-    //     .sort((a, b) => {
-    //       if (!!a.order || !!b.order) { return (a.order || 0) > (b.order || 0) ? -1 : 1; }
-    //       return a.updated > b.updated ? -1 : 1;
-    //     })
-    //   )
-    // );
-  }
+
 }

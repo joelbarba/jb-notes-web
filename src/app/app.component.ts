@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shell/navbar/navbar.component';
 import { MenuComponent } from './shell/menu/menu.component';
+import { BfGrowlModule } from '@blueface_npm/bf-ui-lib';
+import { DataService } from './core/data.service';
+import { DOCUMENT } from '@angular/common';
 
 
 @Component({
@@ -11,6 +14,7 @@ import { MenuComponent } from './shell/menu/menu.component';
     RouterOutlet,
     NavbarComponent,
     MenuComponent,
+    BfGrowlModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -18,9 +22,15 @@ import { MenuComponent } from './shell/menu/menu.component';
 export class AppComponent {
 
   constructor(
+    public data: DataService,
+    @Inject(DOCUMENT) private document: Document
   ) {}
   
-  ngOnInit() {
+  async ngOnInit() {
+    await this.data.initPromise;
+    // const dark = this.data.config.darkMode;
+    // if (dark) { this.document.body.classList.add('dark-mode'); }
+    // else      { this.document.body.classList.remove('dark-mode'); }
   }
 
 
