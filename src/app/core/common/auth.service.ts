@@ -73,7 +73,7 @@ export class AuthService {
           console.log('No Auth Session');
           this.clearProfile().then(() => {
             const route = this.route.snapshot.firstChild?.routeConfig;
-            if ((!route || route && route.data && !route.data['noLogin'])) { this.redirectLogin(); }
+            if ((!route || !route.data || !route?.data['noLogin'])) { this.redirectLogin(); }
             // reject();
           });
         }        
@@ -119,6 +119,7 @@ export class AuthService {
 
   // Redirect to the login page
   redirectLogin(forceReload = false) {
+    console.log('Redirect to login');
     if (forceReload) { // When requestLogout()
       window.location.href = '/login'; // force page reload to remove any possible remaining data
     } else {
