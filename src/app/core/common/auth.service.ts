@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BfGrowlService, BfLoadingBarService } from '@blueface_npm/bf-ui-lib';
+import { BfGrowlService, BfLoadingBarService } from 'bf-ui-lib';
 import { BehaviorSubject, firstValueFrom, Observable, Subject } from 'rxjs';
 import { IProfile } from './interfaces';
 import { 

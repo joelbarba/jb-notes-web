@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, Subscription, SubscriptionLike, combineLatest, debounceTime, map, of, tap } from 'rxjs';
 import { INote, INotebook } from '../../core/common/interfaces';
 import { CommonModule } from '@angular/common';
-import { BfConfirmService, BfGrowlModule, BfGrowlService, BfUiLibModule } from '@blueface_npm/bf-ui-lib';
+import { BfConfirmService, BfGrowlModule, BfGrowlService, BfUiLibModule } from 'bf-ui-lib';
 import { DataService } from '../../core/data.service';
 
 type IExtNotebook = INotebook & { icon: string };

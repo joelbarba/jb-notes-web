@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shell/navbar/navbar.component';
 import { MenuComponent } from './shell/menu/menu.component';
-import { BfGrowlModule } from '@blueface_npm/bf-ui-lib';
+import { BfGrowlModule } from 'bf-ui-lib';
 import { DataService } from './core/data.service';
 import { DOCUMENT } from '@angular/common';
 
