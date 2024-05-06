@@ -6,8 +6,6 @@ import { AppTranslateLoader } from './core/common/app-translate-loader.service';
 import { provideHttpClient } from '@angular/common/http';
 import { BfUiLibModule } from "@blueface_npm/bf-ui-lib";
 import { AppTranslateService } from './core/common/app-translate.service';
-
-import { firebaseConfig } from '../../secrets';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -17,6 +15,18 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 // import { getPerformance, providePerformance } from '@angular/fire/performance';
 // import { getStorage, provideStorage } from '@angular/fire/storage';
 
+// import { firebaseConfig } from '../../secrets';
+const firebaseConfig = {
+  apiKey            : process.env['API_KEY'],
+  authDomain        : process.env['AUTH_DOMAIN'], 
+  projectId         : process.env['PROJECT_ID'],
+  storageBucket     : process.env['STORAGE_BUCKET'],
+  messagingSenderId : process.env['MESSAGING_SENDER_ID'],
+  appId             : process.env['APP_ID'],
+  measurementId     : process.env['MEASUREMENT_ID'],
+};
+
+console.log('firebaseConfig ------>', firebaseConfig);
 
 
 // Initialize prototypes
