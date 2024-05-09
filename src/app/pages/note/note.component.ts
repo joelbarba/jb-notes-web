@@ -114,7 +114,10 @@ export class NoteComponent {
         if (this.note.title === 'New Note') { this.editMode = true; } // when creating new note, edit by default
 
       } else { // Updating note's content while on the page        
-        if (source === 'server' && this.note?.$saved === 'yes') { this.note = { ...this.note, ...doc.data() }; }
+        if (source === 'server' && this.note?.$saved === 'yes') { 
+          this.note = { ...this.note, ...doc.data() }; 
+          if (this.note.mode === 'list') { this.turnTextToCheckList(); }
+        }
       }
 
     });
@@ -215,43 +218,86 @@ export class NoteComponent {
 
   isCopying = false;
   onKeydown(ev: KeyboardEvent) {
-    // console.log(ev);
-    if (ev.ctrlKey && ev.code === 'KeyD' && !this.isCopying) {
-      this.isCopying = true;
+    // console.log(ev.code);
+
+    // Async function to get the current text and line info
+    const getCurrentLine = (callback: (htmlEl: HTMLTextAreaElement, 
+      selIni: number, selEnd: number, selectedText: string, lineIni: number, lineEnd: number, lineText: string,
+    ) => void) => {
       setTimeout(() => {
         const htmlEl = ev.target as HTMLTextAreaElement;
-        const ini = htmlEl.selectionStart;
-        const end = htmlEl.selectionEnd;
-        const selectedText = this.note.content.slice(ini, end);
+        const selIni = htmlEl.selectionStart;
+        const selEnd = htmlEl.selectionEnd;
+        const selectedText = this.note.content.slice(selIni, selEnd);
+        let lineIni = selEnd - 1;
+        let lineEnd = selEnd;
+        while (this.note.content.at(lineIni) !== `\n` && lineIni >= 0) { lineIni--; }
+        while (this.note.content.at(lineEnd) !== `\n` && lineEnd < this.note.content.length) { lineEnd++; }
+        const lineText = `\n` + this.note.content.slice(lineIni + 1, lineEnd);
+        callback(htmlEl, selIni, selEnd, selectedText, lineIni, lineEnd, lineText);
+      });
+    };
 
-        if (selectedText === '') { // copy current line below
-          let lineIni = ini - 1;
-          let lineEnd = ini;
-          while (this.note.content.at(lineIni) !== `\n` && lineIni >= 0) { lineIni--; }
-          while (this.note.content.at(lineEnd) !== `\n` && lineEnd < this.note.content.length) { lineEnd++; }
-          const lineText = `\n` + this.note.content.slice(lineIni + 1, lineEnd);
+
+    // Ctrl + D --> Copy line or selection
+    if (ev.ctrlKey && ev.code === 'KeyD' && !this.isCopying) {
+      this.isCopying = true;
+      getCurrentLine((htmlEl, selIni, selEnd, selectedText, lineIni, lineEnd, lineText) => {
+        if (selectedText === '') { // Copy current line below
           const contArr = this.note.content.split('');
           contArr.splice(lineEnd, 0, lineText);
           this.contentChange(contArr.join(''));
           setTimeout(() => {
-            htmlEl.selectionStart = ini + lineText.length;
+            htmlEl.selectionStart = selIni + lineText.length;
             htmlEl.selectionEnd = htmlEl.selectionStart;
             this.isCopying = false;
           });
 
         } else { // Copy selection right after it
           const contArr = this.note.content.split('');
-          contArr.splice(end, 0, selectedText);
+          contArr.splice(selEnd, 0, selectedText);
           this.contentChange(contArr.join(''));
           setTimeout(() => {
-            htmlEl.selectionStart = end;
-            htmlEl.selectionEnd = end + selectedText.length;
+            htmlEl.selectionStart = selEnd;
+            htmlEl.selectionEnd = selEnd + selectedText.length;
             this.isCopying = false;
           });
         }
       });
       ev.preventDefault();
     }
+
+    // Ctrl + Up/Down ---> Move line
+    if (ev.ctrlKey && ev.shiftKey && (ev.code === 'ArrowUp' || ev.code === 'ArrowDown')) {
+      this.isCopying = true;
+      ev.preventDefault();
+      getCurrentLine((htmlEl, selIni, selEnd, selectedText, lineIni, lineEnd, lineText) => {
+        if (selectedText === '') {
+          const contArr = this.note.content.split('\n');
+          const lineNoBreak = lineText.split(`\n`).join('');
+          const lineIndex = contArr.indexOf(lineNoBreak);
+          const key = ev.code === 'ArrowUp' ? 'up' : 'down';
+
+          if ((key === 'up' && lineIndex > 0) || (key === 'down' && lineIndex < contArr.length - 1)) {
+            let newPos = selIni;
+            if (key === 'up')   { newPos -= contArr[lineIndex - 1].length + 1; }
+            if (key === 'down') { newPos += contArr[lineIndex + 1].length + 1; }
+
+            contArr.splice(lineIndex, 1); // remove selected line
+            if (key === 'up')   { contArr.splice(lineIndex - 1, 0, lineNoBreak); } // add it above
+            if (key === 'down') { contArr.splice(lineIndex + 1, 0, lineNoBreak); } // add it below
+            this.contentChange(contArr.join('\n'));
+            setTimeout(() => {
+              htmlEl.selectionStart = newPos;
+              htmlEl.selectionEnd = newPos;
+              this.isCopying = false;
+            });
+          } else { this.isCopying = false; }
+        } else { this.isCopying = false; }
+      });
+    } 
+
+    // Ctrl + S ---> Save
     if (ev.ctrlKey && ev.code === 'KeyS' && !this.isCopying) {
       this.noteChange$.next(this.note.content);
       ev.preventDefault();

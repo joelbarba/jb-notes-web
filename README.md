@@ -39,13 +39,16 @@ ok - New Note
 ok - Delete Note
 ok - Dark Mode
 ok - Key shortcuts (Ctrl+D = copy line)
+ok - Deploy it on netlify
+ok - fix list update on different clients
+ok - Implement line move (ctrl+shift+up/down)
 - Implement undo (ctrl+z)
+- Make left panel collapsable
 - Handle offline (do not clear when going offline)
-- Create/Delete notebook
 - Text Filter on the notes list
 - Notes order on All Notes left panel
+- Create/Delete notebook
 - Font-family and size on the note DB
 - Move dark mode on localstorage
-- Deploy it on netlify
 
 

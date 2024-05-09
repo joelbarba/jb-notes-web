@@ -6,6 +6,7 @@ import { NoteComponent } from './pages/note/note.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/notes', pathMatch: 'full' },
+    { path: 'home', redirectTo: '/notes', pathMatch: 'full' },
     { path: 'login',    component: LoginComponent,      data: { label: 'page.label.login', noLogin: true } },
     { path: 'settings', component: SettingsComponent,   data: { label: 'page.label.settings' } },
     { path: 'notes', children: [
