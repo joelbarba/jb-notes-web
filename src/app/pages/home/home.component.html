@@ -1,9 +1,9 @@
-<div class="row mt-3" *ngIf="data.selNotebookId$ | async as selId">
-  
+<div class="row mt-3" *ngIf="{ id: data.selNotebookId$ | async } as selNotebook">
+
   <!-- Notes -->
   <div class="col notes-list">
     <h3>
-      Notes<span *ngIf="selId !== 'all'"> from <span class="icon-book"></span> {{selId}}</span>:
+      Notes<span *ngIf="selNotebook.id !== 'all'"> from <span class="icon-book"></span> {{selNotebook.id}}</span>:
     </h3>
     
     <div class="row note-row" *ngFor="let note of list$ | async" (click)="selectNote(note)">
@@ -16,7 +16,7 @@
       <div class="col-3 text-right">
         {{ note.updated | date: 'dd MMM y - HH:mm:ss' }}
       </div>
-      <div class="col-12" *ngIf="selId === 'all'">
+      <div class="col-12" *ngIf="selNotebook.id === 'all'">
         <span style="margin-right: 5px;" class="icon-book"></span>
         <span>{{note.notebookId}}[{{note.order}}]</span>
       </div>
@@ -29,11 +29,11 @@
   <div class="col-lg-3 col-4">
     <bf-btn class="full-width" bfType="add" bfText="Create New Note" (bfClick)="createNewNote()"></bf-btn>
     <h3 class="mt-3">Notebooks:</h3>
-    <div class="notebook-row" [class.selected]="selId === 'all'" (click)="selectNotebook()">
+    <div class="notebook-row" [class.selected]="selNotebook.id === 'all'" (click)="selectNotebook()">
       <span>All Notes</span>
     </div>
     <div *ngFor="let notebook of data.notebooks$ | async"
-          class="notebook-row" [class.selected]="selId === notebook.id"
+          class="notebook-row" [class.selected]="selNotebook.id === notebook.id"
         (click)="selectNotebook(notebook)">
       <span class="icon-book"></span>
       <span class="ml-2">{{ notebook.name }}</span>

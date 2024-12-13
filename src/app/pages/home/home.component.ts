@@ -48,12 +48,12 @@ export class HomeComponent {
 
 
   ngOnInit() {
-    this.data.initPromise.then(() => {
+    // this.data.initPromise.then(() => {
       this.list$ = combineLatest([this.data.notes$, this.data.selNotebookId$])
         .pipe(map(([notes, notebookId]) => {
           return notes.filter(note => (note.notebookId === notebookId) || notebookId === 'all') as INote[];
       }));
-    });
+    // });
   }
 
   selectNote(note: INote) {

@@ -3,8 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subject, map, take } from 'rxjs';
 import { IConfig, INote, INotebook } from './common/interfaces';
 import { AuthService } from './common/auth.service';
-import { Firestore, addDoc, collectionData, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { collection, setDoc } from 'firebase/firestore';
+import { Firestore, addDoc, collectionData, doc, getDoc, getDocs, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { collection, DocumentData, QuerySnapshot, setDoc } from 'firebase/firestore';
 import { DOCUMENT } from '@angular/common';
 
 
@@ -12,8 +12,10 @@ import { DOCUMENT } from '@angular/common';
 export class DataService {
   notesCol = collection(this.firestore, 'notes');
   notebooksCol = collection(this.firestore, 'notebooks');
-  notes$ !: Observable<INote[]>;
-  notebooks$ !: Observable<INotebook[]>;
+  // notes$ !: Observable<INote[]>;
+  // notebooks$ !: Observable<INotebook[]>;
+  notes$: BehaviorSubject<INote[]> = new BehaviorSubject([] as INote[]);
+  notebooks$: BehaviorSubject<INotebook[]> = new BehaviorSubject([] as INotebook[]);
 
   configDoc = doc(this.firestore, 'notes', '0');
 
@@ -38,19 +40,38 @@ export class DataService {
   }
 
   loadNotes() {
-    this.notes$ = collectionData(this.notesCol, { idField: 'id'}).pipe(map(data => {
-      const notes = data.filter(n => n.id !== '0') as INote[];
-      return notes.sort((a, b) => {
+    // this.notes$ = collectionData(this.notesCol, { idField: 'id'}).pipe(map(data => {
+    //   const notes = data.filter(n => n.id !== '0') as INote[];
+    //   return notes.sort((a, b) => {
+    //     if (!!a.order || !!b.order) { return (a.order || 0) > (b.order || 0) ? -1 : 1; }
+    //     return a.updated > b.updated ? -1 : 1;
+    //   });
+    // }));
+
+    onSnapshot(collection(this.firestore, 'notes'), (snapshot: QuerySnapshot) => {
+      const notes = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as INote)).filter(n => n.id !== '0');
+      notes.sort((a, b) => {
         if (!!a.order || !!b.order) { return (a.order || 0) > (b.order || 0) ? -1 : 1; }
         return a.updated > b.updated ? -1 : 1;
       });
-    }));
+      console.log('notes', notes);
+      this.notes$.next(notes);
+    });
   }
 
   loadNotebooks() {
-    this.notebooks$ = collectionData(this.notebooksCol, { idField: 'id'}).pipe(map(notebooks => notebooks
-      .sort((a, b) => ((a['order'] || 0) > (b['order'] || 0) ? 1 : -1)) as INotebook[]
-    ));
+    // this.notebooks$ = collectionData(this.notebooksCol, { idField: 'id'}).pipe(map(notebooks => notebooks
+    //   .sort((a, b) => ((a['order'] || 0) > (b['order'] || 0) ? 1 : -1)) as INotebook[]
+    // ));
+
+    onSnapshot(collection(this.firestore, 'notebooks'), (snapshot: QuerySnapshot) => {
+      const notebooks = snapshot.docs
+        .map(doc => ({ ...doc.data(), id: doc.id } as INotebook))
+        .sort((a, b) => ((a['order'] || 0) > (b['order'] || 0) ? 1 : -1));
+
+      console.log('notebooks', notebooks);
+      this.notebooks$.next(notebooks);
+    });
   }
 
   loadConfig() {
@@ -62,7 +83,7 @@ export class DataService {
         this.router.navigate(['/notes/' + this.config.lastId]);
       }
       this.changeDarkMode(this.config?.darkMode);
-      this.selNotebookId$.next(this.config?.notebookId || '');
+      this.selNotebookId$.next(this.config?.notebookId || 'all');
       return this.config;
     });
   }
