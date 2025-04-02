@@ -4,10 +4,17 @@ $left-panel-width: 400px;
 
 .panel-left {
   position: absolute;
-  left: 15;
-  width: $left-panel-width;
+  left: 15px;
+  width: calc($left-panel-width + 30px);
   bottom: 0;
   top: 15px;
+  .notes-list {
+    overflow-y: auto;
+    // border: 3px solid red;
+    max-height: calc(100% - 225px);
+    width: 100%;
+    padding-bottom: 60px;
+  }
 }
 .panel-right {
   .note-header-box {

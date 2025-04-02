@@ -1,6 +1,6 @@
 <div class="panel-left">
   
-  <div class="flex mb-2">
+  <div class="flex mb-2 mr-4">
     <bf-btn class="flex-1 full-width pr-2" bfType="add" bfText="New" (bfClick)="createNewNote()"></bf-btn>
     <bf-btn class="flex-1 full-width pr-2" bfType="warning" bfIcon="icon-bin" bfText="Del" (bfClick)="deleteNote()"></bf-btn>
     <bf-btn class="flex-1 full-width pr-1" bfType="edit" bfText="Edit" (bfClick)="editMode = true"></bf-btn>    
@@ -42,7 +42,7 @@
   <hr>
 
   <h3 class="mt-2 link" (click)="router.navigate(['notes'])">All Notes</h3>
-  <div *ngIf="allNotes$">
+  <div class="notes-list" *ngIf="allNotes$">
     <div *ngFor="let notebook of allNotes$ | async" class="notebook-row">
       <span (click)="notebook.isExp = !notebook.isExp">
         <span class="icon-book"></span>
@@ -61,9 +61,9 @@
         </div>
       </div>
     </div>
+    <!-- <bf-btn class="full-width mt-5 mr-3" bfText="REVERT LINES" (bfClick)="revertLines()"></bf-btn> -->
   </div>
 
-  <bf-btn class="full-width mt-5" bfText="REVERT LINES" (bfClick)="revertLines()"></bf-btn>
 
 </div>
 
