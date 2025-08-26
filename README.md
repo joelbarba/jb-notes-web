@@ -1,6 +1,20 @@
-# JBNOTESWEB
+# JB-Notes (Web Client)
+
+Web Client for a Evernote light clone<br/>
+It's meant to be a simple and easy app to take/keep notes. Performance is key, so loading is as quick as possible.<br/>
+
+<br/>
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.4.
+
+
+![Screenshot of a sample view of a note edit](./example.png)
+
+test2
+
+![Screenshot bla bla](https://github.com/joelbarba/jb-notes-web/blob/master/example.png)
+
+
 
 ## Development server
 
