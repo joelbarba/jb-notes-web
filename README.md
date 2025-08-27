@@ -3,6 +3,7 @@
 Web app to take notes (Evernote personal clone)<br/>
 <br/>
 As an Evernote user, I got anoyed enough with the _"join premium"_ popup as to dump the app and write my own.<br/>
+
 This is meant to be a **simpler** and much **faster** way to take/keep notes. It doesn't have all the capabilites, but those basic ones that are more than enough for an easy note taking process.
 Slow loading was another reason I dumped Evernote, so I made this app as light and performance as I could. It loads instantly on my browser, and the data takes less than 500ms to show up.<br/>
 
@@ -15,7 +16,7 @@ This project was developed with [Angular](https://angular.dev/) version 17.3.4.
 
 ## Backend Support
 
-This project works with **Firebase** (Google Cloud), using its real time DB (Firestore).
+This project works with **Firebase** (Google Cloud), using its real time DB (Firestore).<br/>
 To run it you need a `secrets.ts` file where to export your `firebaseConfig` object. 
 <!-- Example:
 ```
@@ -55,7 +56,8 @@ export interface INote {
 }
 ```
 > [!IMPORTANT]
-> Notes are automatically saved on writing (with a `debounceTime(1500)`), and will also reload automatically from the server in real time, so no saving or loading action is required by the user. Only the Notebook details require to be saved when changing them.
+> Notes are automatically saved on writing (with a `debounceTime(1500)`), and will also reload automatically from the server in real time, so no saving or loading action is required by the user.<br/>
+Only the Notebook details require to be saved when changing them.
 
 ## Routing
 When no note is selected, the app shows a list of all notes with their title, last update and a brief part of their content.<br/>
@@ -82,7 +84,7 @@ List items are defined by lines starting with a `-`. The check/uncheck value can
 You can duplicate the current line (where your cursor is currently located) with the shortcut `Ctrl + D`
 
 ### Line move
-You move the current line (where your cursor is currently located) up or down, reordering it into the text, with the shortcut `Ctrl + Shift + ` :arrow_up: | :arrow_down:
+You move the current line (where your cursor is currently located) up or down, reordering it into the text, with the shortcut `Ctrl + Shift + ⬆️ | ⬇️`
 
 ### Dark Mode
 You can toogle the color theme (light/dark) expanding the profile section (top-right corner).<br/>
