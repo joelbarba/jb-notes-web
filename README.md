@@ -82,7 +82,7 @@ List items are defined by lines starting with a `-`. The check/uncheck value can
 You can duplicate the current line (where your cursor is currently located) with the shortcut `Ctrl + D`
 
 ### Line move
-You move the current line (where your cursor is currently located) up or down, reordering it into the text, with the shortcut `Ctrl + Shift + :arrow_up:` | `:arrow_down:`
+You move the current line (where your cursor is currently located) up or down, reordering it into the text, with the shortcut `Ctrl + Shift + ` :arrow_up: | :arrow_down:
 
 ### Dark Mode
 You can toogle the color theme (light/dark) expanding the profile section (top-right corner).<br/>
