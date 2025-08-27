@@ -102,5 +102,8 @@ There are still some features I'd like to add in the future:
 - [ ] Font-family and size on the note DB
 - [ ] Move dark mode on localstorage
 
+## Mobile version
+There is an entire different client for mobile (Ionic based). You can see the project here: [https://github.com/joelbarba/jb-notes](https://github.com/joelbarba/jb-notes)
+
 ## Further help
 You can leave some comments on the project or contact [me](mailto:joel.barba.vidal@gmail.com) directly for more information.
