@@ -18,18 +18,7 @@ This project was developed with [Angular](https://angular.dev/) version 17.3.4.
 
 This project works with **Firebase** (Google Cloud), using its real time DB (Firestore).<br/>
 To run it you need a `secrets.ts` file where to export your `firebaseConfig` object. 
-<!-- Example:
-```
-export const firebaseConfig = {
-  apiKey: "iyoisdoifksd768sd76f87s8dgsfd87g987a9s8",
-  authDomain: "jb-notes-8d78s.firebaseapp.com",
-  projectId: "jb-notes-8d78s",
-  storageBucket: "jb-notes-8d78s.appspot.com",
-  messagingSenderId: "876876876878",
-  appId: "1:876876876878:web:78as76a8s7d68a7sd68a7s",
-  measurementId: "G-S8D7F98798"
-};
-``` -->
+
 
 It uses 2 main collections:
 - **notebooks**
@@ -37,7 +26,7 @@ It uses 2 main collections:
 
 Every note must be located into one notebook, and they may have an order of apearence on that notebook.<br/>
 The typings for the DB Model can be found in [interfaces.ts](./src/app/core/common/interfaces.ts):
-```
+```typescript
 export interface INotebook {
   id   ?: string;
   name  : string;
